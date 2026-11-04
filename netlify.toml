@@ -1,0 +1,11 @@
+# Netlify builds only the React frontend. The Spring Boot backend and PostgreSQL run elsewhere.
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Page refresh on routes like /lots is handled by frontend/public/_redirects,
+# which also works when dist is uploaded by drag and drop.

@@ -1,0 +1,60 @@
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow-condensed/500.css';
+@import '@fontsource/barlow-condensed/600.css';
+
+:root {
+  --red: #e31837;
+  --white: #ffffff;
+  --charcoal: #171717;
+  --grey: #777777;
+  --light: #f3f3f3;
+  --line: #e2e2e2;
+  --ok: #1d7a46;
+  font-family: Barlow, "Segoe UI", sans-serif;
+  color: var(--charcoal);
+  background: var(--white);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: "Barlow Condensed", Barlow, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

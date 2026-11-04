@@ -1,0 +1,15 @@
+package com.traceintel.dto.user;
+
+import com.traceintel.enums.RoleType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record UserUpdateRequest(
+        @NotBlank @Size(max = 100) String fullName,
+        @Email @Size(max = 100) String email,
+        @NotNull RoleType role,
+        boolean active
+) {
+}
