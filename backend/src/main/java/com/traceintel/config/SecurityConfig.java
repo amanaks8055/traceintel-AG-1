@@ -98,7 +98,12 @@ public class SecurityConfig {
             @Value("${app.cors.allow-credentials}") Boolean allowCredentials
     ) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(origins.split(",")));
+        // Values pasted into a hosting dashboard often carry spaces, a new line or a trailing slash.
+        configuration.setAllowedOrigins(Arrays.stream(origins.split(","))
+                .map(String::strip)
+                .map(origin -> origin.endsWith("/") ? origin.substring(0, origin.length() - 1) : origin)
+                .filter(origin -> !origin.isEmpty())
+                .toList());
         configuration.setAllowedMethods(Arrays.asList(methods.split(",")));
         configuration.setAllowedHeaders(Arrays.asList(headers.split(",")));
         configuration.setAllowCredentials(allowCredentials);
