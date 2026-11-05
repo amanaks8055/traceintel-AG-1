@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
-import { errorMessage } from '../api/client'
+import { apiClient, errorMessage } from '../api/client'
 import { MachineStage } from '../components/MachineStage'
 
 export function LoginPage() {
@@ -9,8 +9,14 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSlow, setIsSlow] = useState(false)
   const { signIn } = useAuth()
   const navigate = useNavigate()
+
+  // A free hosted backend sleeps when idle. Wake it while the user is still typing.
+  useEffect(() => {
+    fetch(apiClient.defaults.baseURL, { mode: 'no-cors' }).catch(() => {})
+  }, [])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -20,6 +26,7 @@ export function LoginPage() {
     }
     setError('')
     setIsSubmitting(true)
+    const slowTimer = setTimeout(() => setIsSlow(true), 5000)
     try {
       await signIn(username.trim(), password)
       navigate('/dashboard')
@@ -27,6 +34,8 @@ export function LoginPage() {
       const refused = failure.response?.status === 401
       setError(refused ? 'Incorrect username or password.' : errorMessage(failure))
     } finally {
+      clearTimeout(slowTimer)
+      setIsSlow(false)
       setIsSubmitting(false)
     }
   }
@@ -43,6 +52,7 @@ export function LoginPage() {
           <label htmlFor="password">Password</label>
           <input id="password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} />
           {error && <p className="error-message">{error}</p>}
+          {isSlow && <p className="state-note">The server is waking up. This can take up to a minute the first time.</p>}
           <button className="primary-button" disabled={isSubmitting} type="submit">
             {isSubmitting ? 'Signing in...' : 'Sign in'}
           </button>
