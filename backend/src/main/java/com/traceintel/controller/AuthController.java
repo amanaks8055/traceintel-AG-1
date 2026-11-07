@@ -23,11 +23,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -54,6 +57,12 @@ public class AuthController {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+    }
+
+    // Public health check. An uptime service calls it so the free host does not sleep.
+    @GetMapping("/ping")
+    public Map<String, String> ping() {
+        return Map.of("status", "ok");
     }
 
     @PostMapping("/login")

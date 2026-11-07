@@ -182,6 +182,11 @@ class SecurityRulesTest {
     }
 
     @Test
+    void pingNeedsNoLogin() throws Exception {
+        mockMvc.perform(get("/api/auth/ping")).andExpect(status().isOk());
+    }
+
+    @Test
     void shortNewPasswordIsBadRequest() throws Exception {
         postJson("/api/auth/reset-password", "{\"login\":\"operator1\",\"code\":\"ABCDE23456\",\"newPassword\":\"short\"}")
                 .andExpect(status().isBadRequest());
